@@ -1,14 +1,15 @@
 import { Request, Response } from "express";
 import TimerService from "../services/timerService";
+import { timeValidators } from "../validators/timeValidators";
 
 const timerService = new TimerService();
 
 const addTimer = async (req: Request, res: Response) => {
   try {
     const userId = req.user?.id;
-    const time = req.body.time;
+    const { time } = await timeValidators.validateAsync(req.body);
     const result = await timerService.createTimer({ time, userId });
-    res.status(201).json({ message: result.message });
+    res.status(201).json({ message: result });
   } catch (err) {
     res.status(500).json(err);
   }

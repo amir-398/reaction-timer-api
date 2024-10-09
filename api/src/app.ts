@@ -15,3 +15,5 @@ app.use("/", authRoute);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+export default app;

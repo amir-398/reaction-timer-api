@@ -1,6 +1,6 @@
 import express from "express";
 import timerController from "../controller/timerController";
-import JwtMiddleware from "../middlewares/JwtMiddleware";
+import JwtMiddleware from "../middlewares/jwtMiddleware";
 
 const router = express.Router();
 

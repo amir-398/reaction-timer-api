@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const registerValidator = Joi.object({
+export const registerValidator = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string()
     .min(6)
@@ -13,4 +13,7 @@ const registerValidator = Joi.object({
   role: Joi.boolean().default(false),
 });
 
-export default registerValidator;
+export const authValidator = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+});

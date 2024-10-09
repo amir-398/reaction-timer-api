@@ -39,11 +39,23 @@ class AuthService {
     return { message: "Utilisateur connecté", token: token };
   }
 
-  async getAllUsers() {
+  async getAllUsers(connectedUserId: string) {
+    const user = await Auth.findById(connectedUserId);
+    if (user?.role) {
+      return {
+        message: "Vous n'êtes pas autorisé à effectuer cette opération",
+      };
+    }
     return await Auth.find();
   }
 
-  async getUserById(userId: string) {
+  async getUserById(userId: string, connectedUserId: string) {
+    const user = await Auth.findById(connectedUserId);
+    if (user?.role || connectedUserId !== userId) {
+      return {
+        message: "Vous n'êtes pas autorisé à effectuer cette opération",
+      };
+    }
     return await Auth.findById(userId);
   }
 
@@ -55,7 +67,15 @@ class AuthService {
     return { message: "Utilisateur mis à jour" };
   }
 
-  async deleteUser(userId: string) {
+  async deleteUser(userId: string, userConnectedId: string) {
+    const userConnected = await Auth.findById(userConnectedId);
+
+    if (userConnected?.role === true && userConnected.id !== userId) {
+      return {
+        message: "Vous n'êtes pas autorisé à effectuer cette opération",
+      };
+    }
+
     await Auth.findById(userId).deleteOne();
     return { message: "Utilisateur supprimé" };
   }
