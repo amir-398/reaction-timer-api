@@ -8,8 +8,8 @@ import authRoute from "./routes/authRoute";
 
 connectDB();
 
-app.use("/time", timeRoute);
-app.use("/auth", authRoute);
+app.use("/", timeRoute);
+app.use("/", authRoute);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

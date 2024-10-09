@@ -1,9 +1,17 @@
 import express from "express";
+import timerController from "../controller/timerController";
 
-const route = express.Router();
+const router = express.Router();
 
-route.get("/time", (req, res) => {
-  res.send(new Date().toString());
-});
+router.route("/submit-reaction-time").post(timerController.addTimer);
+router
+  .route("/get-reaction-times/:userid")
+  .get(timerController.getTimersByUserId);
 
-export default route;
+router.route("/get-all-reaction-times").get(timerController.getAllTimers);
+
+router
+  .route("/get-login-user-reaction-times")
+  .post(timerController.getLoginUserTimers);
+
+export default router;
