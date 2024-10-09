@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { NextFunction } from "express";
 import bcryptjs from "bcryptjs";
+import { serialize } from "v8";
 interface AuthProps extends Document {
   email: string;
   password: string;

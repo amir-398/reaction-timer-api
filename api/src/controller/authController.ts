@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import AuthService from "../services/authService";
-
+import * as Yup from "yup";
+import registerValidator from "../validators/authValidators";
 const authService = new AuthService();
 
 const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const result = await authService.register(req.body);
+    const data = await registerValidator.validateAsync(req.body);
+    const result = await authService.register(data);
     res.status(201).json({ message: result.message });
   } catch (err) {
     res.status(500).json({ message: err });
@@ -17,7 +19,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
     const result = await authService.login(req.body);
     res.status(200).json({ message: result.message, token: result.token });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: "une erreur s'est produite", error: err });
   }
 };
 

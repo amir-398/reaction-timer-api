@@ -3,14 +3,13 @@ import bcryptjs from "bcryptjs";
 import Auth from "../models/authModel";
 
 class AuthService {
-  async register(data: { email: string; password: string }) {
-    const email = data.email;
-    const password = data.password;
+  async register(data: { email: string; password: string; role: boolean }) {
+    const { email } = data;
     const user = await Auth.findOne({ email });
     if (user) {
       return { message: "User already exists" };
     }
-    const newUser = new Auth({ email, password });
+    const newUser = new Auth(data);
     await newUser.save();
     return { message: "User created" };
   }
@@ -18,11 +17,14 @@ class AuthService {
   async login(data: { email: string; password: string }) {
     const email = data.email;
     const password = data.password;
+
     const user = await Auth.findOne({ email });
+
     if (!user) {
       return { message: "Utilisateur non trouvé" };
     }
     const isMatch = await bcryptjs.compare(password, user.password);
+
     if (!isMatch) {
       return { message: "email ou Mot de passe incorrect" };
     }
