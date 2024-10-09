@@ -5,7 +5,8 @@ const app = express();
 const port = 3000;
 import timeRoute from "./routes/timeRoute";
 import authRoute from "./routes/authRoute";
-
+app.use(express.urlencoded());
+app.use(express.json());
 connectDB();
 
 app.use("/", timeRoute);

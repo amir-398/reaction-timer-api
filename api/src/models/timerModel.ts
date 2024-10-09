@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-interface TimerProps extends Document {
+export interface TimerProps extends Document {
   user_id: string;
   time: number;
   createdAt?: Date;

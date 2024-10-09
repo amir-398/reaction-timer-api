@@ -13,7 +13,7 @@ declare module "express-serve-static-core" {
     user?: DecodedToken;
   }
 }
-export const verifyToken = async (
+const verifyToken = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -46,3 +46,5 @@ export const verifyToken = async (
     }
   }
 };
+
+export default { verifyToken };
