@@ -6,10 +6,9 @@ const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "User Authentication API",
+      title: "f1 reaction timer API",
       version: "1.0.0",
-      description:
-        "API pour l'enregistrement, la connexion, et la gestion des utilisateurs.",
+      description: "Une API pour gérer les timers de réaction des utilisateurs",
     },
     components: {
       securitySchemes: {
