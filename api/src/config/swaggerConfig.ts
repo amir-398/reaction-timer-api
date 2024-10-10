@@ -25,7 +25,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./routes/*.ts"], // Indique où Swagger doit chercher les routes pour générer la documentation
+  apis: ["./routes/*.ts"],
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
