@@ -1,4 +1,4 @@
-# F1 Reaction timer api
+# F1 Reaction timer API
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
 Backend de l'application développé avec Express.js, MongoDB, et JWT pour l'authentification.
