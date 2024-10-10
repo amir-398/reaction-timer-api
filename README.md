@@ -5,7 +5,7 @@ Backend de l'application développé avec Express.js, MongoDB, et JWT pour l'aut
 
 ## Fonctionnalités
 
-Backend de l'application développé avec Express.js, MongoDB, et JWT pour l'authentification.
+Ce backend fournit une API pour gérer les utilisateurs et les timers, avec des fonctionnalités d'enregistrement, de connexion, et de gestion des timers, le tout sécurisé par des tokens JWT.
 
 ## Technologies Utilisées
 
