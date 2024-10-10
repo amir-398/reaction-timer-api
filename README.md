@@ -1,4 +1,4 @@
-# Backend avec Express.js, MongoDB et JWT
+# F1 Reaction timer api
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
 Backend de l'application développé avec Express.js, MongoDB, et JWT pour l'authentification.
