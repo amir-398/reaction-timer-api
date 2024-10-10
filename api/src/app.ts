@@ -1,11 +1,13 @@
-const express = require("express");
+import configureService from "./config/confugrationServeur";
+import connectDB from "./config/connectDB";
+import startServeur from "./config/serveur";
+import express from "express";
+import { setupSwagger } from "./config/swaggerConfig";
 const app = express();
-const port = 3000;
 
-app.get("/", (req, res) => {
-  res.send("");
-});
+connectDB();
+configureService(app);
+startServeur(app);
+setupSwagger(app);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+export default app;
