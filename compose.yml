@@ -1,23 +1,83 @@
 services:
-  app:
+  # #user service
+  user_service:
     build:
       context: .
-      dockerfile: ./docker/node/Dockerfile
+      dockerfile: ./docker/user_service/Dockerfile
+    environment:
+      - PORT=${USER_SERVICE_PORT}
     ports:
-      - "3000:3000"
+      - "${USER_SERVICE_PORT}:${USER_SERVICE_PORT}"
     volumes:
-      - ./api/src/:/home/amir/app/src/
+      - ./api/packages/user_service/:/home/amir/app/user_service
+    env_file:
+      - .env
+    depends_on:
+      - user_service_db
+
+  # #timer service
+  timer_service:
+    build:
+      context: .
+      dockerfile: ./docker/timer_service/Dockerfile
+    environment:
+      - PORT=${TIMER_SERVICE_PORT}
+    ports:
+      - "${TIMER_SERVICE_PORT}:${TIMER_SERVICE_PORT}"
+    volumes:
+      - ./api/packages/timer_service/:/home/amir/app/timer_service
     env_file:
       - .env
 
-  db:
+  # #auth service
+  # auth_service:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/auth_service/Dockerfile
+  #   environment:
+  #     - PORT=${AUTH_SERVICE_PORT}
+  #   ports:
+  #     - "${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}"
+  #   volumes:
+  #     - ./api/packages/auth_service/:/home/amir/app/packages/auth_service
+  #   env_file:
+  #     - .env
+
+  #api gateway service
+  # api_gateway_service:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./docker/api_gateway_service/Dockerfile
+  #   environment:
+  #     - PORT=${API_GATEWAY_SERVICE_PORT}
+  #   ports:
+  #     - "${API_GATEWAY_SERVICE_PORT}:${API_GATEWAY_SERVICE_PORT}"
+  #   volumes:
+  #     - ./api/packages/api_gateway_service/:/home/amir/app/packages/api_gateway_service
+  #   env_file:
+  #     - .env
+
+  user_service_db:
     build:
       context: .
       dockerfile: ./docker/mongo/Dockerfile
     ports:
       - "27017:27017"
     volumes:
-      - ./api/db/:/data/db
+      - ./api/db/user_service_db:/data/db/user_service_db
+    environment:
+      MONGO_INITDB_DATABASE: ${USER_SERVICE_DB_NAME}
+    env_file:
+      - .env
+
+  timer_service_db:
+    build:
+      context: .
+      dockerfile: ./docker/mongo/Dockerfile
+    ports:
+      - "27018:27018"
+    volumes:
+      - ./api/db/timer_service_db:/data/db/timer_service_db
     environment:
       MONGO_INITDB_DATABASE: ${DB_NAME}
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
@@ -25,17 +85,17 @@ services:
     env_file:
       - .env
 
-  mongo-express:
-    image: mongo-express:latest
-    container_name: mongo-express
-    environment:
-      ME_CONFIG_BASICAUTH_USERNAME: admin
-      ME_CONFIG_BASICAUTH_PASSWORD: admin
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${DB_USER}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASSWORD}
-      ME_CONFIG_MONGODB_SERVER: db
-      ME_CONFIG_MONGODB_PORT: ${DB_PORT}
-    ports:
-      - "8081:8081"
-    depends_on:
-      - db
+  # mongo-express:
+  #   image: mongo-express:latest
+  #   container_name: mongo-express
+  #   environment:
+  #     ME_CONFIG_BASICAUTH_USERNAME: admin
+  #     ME_CONFIG_BASICAUTH_PASSWORD: admin
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${DB_USER}
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASSWORD}
+  #     ME_CONFIG_MONGODB_SERVER: db
+  #     ME_CONFIG_MONGODB_PORT: ${DB_PORT}
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on:
+  #     - db
