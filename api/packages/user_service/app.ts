@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.send("Helosr!");
 });
 
-const port = 3000;
+const port = process.env.USER_SERVICE_PORT || 3000;
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
