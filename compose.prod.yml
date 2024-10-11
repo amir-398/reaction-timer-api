@@ -1,0 +1,35 @@
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/node/Dockerfile.prod
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api/src/:/home/amir/app/src/
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.node.rule=Host(`f1-api.devprod.fr`)"
+      - "traefik.http.routers.node.entrypoints=websecure"
+      - "traefik.http.routers.node.tls.certresolver=myresolver"
+    networks:
+      - traefik-routing
+
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/mongo/Dockerfile.prod
+    ports:
+      - "27017:27017"
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env

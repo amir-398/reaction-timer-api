@@ -5,7 +5,9 @@
     "target": "es2021",
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "strict": true
   },
-  "lib": ["es2021"]
+  "lib": ["es2021"],
+  "exclude": ["node_modules"]
 }

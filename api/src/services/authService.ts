@@ -1,15 +1,21 @@
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import Auth from "../models/authModel";
+import dotenv from "dotenv";
+dotenv.config();
 
 class AuthService {
   async register(data: { email: string; password: string; role: boolean }) {
-    const { email } = data;
+    const { email, password } = data;
     const user = await Auth.findOne({ email });
     if (user) {
       return { message: "User already exists" };
     }
-    const newUser = new Auth(data);
+    // Générer un sel et hacher le mot de pass
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(password, salt);
+    // Créer un nouvel utilisateur avec le mot de passe haché
+    const newUser = new Auth({ ...data, password: hashedPassword });
     await newUser.save();
     return { message: "User created" };
   }
@@ -33,6 +39,11 @@ class AuthService {
       id: user.id,
     };
     // Générer un JWT
+    console.log("---------------", process.env.JWT_KEY);
+
+    if (!process.env.JWT_KEY) {
+      throw new Error("JWT_KEY is not defined in environment variables");
+    }
     const token = jwt.sign(payload, process.env.JWT_KEY, {
       expiresIn: "10h", // Définir une durée de vie appropriée pour le token
     });

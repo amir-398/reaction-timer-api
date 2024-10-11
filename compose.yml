@@ -9,6 +9,9 @@ services:
       - ./api/src/:/home/amir/app/src/
     env_file:
       - .env
+    restart: always
+    networks:
+      - app-network
 
   db:
     build:
@@ -18,12 +21,15 @@ services:
       - "27017:27017"
     volumes:
       - ./api/db/:/data/db
+    restart: always
     environment:
       MONGO_INITDB_DATABASE: ${DB_NAME}
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
     env_file:
       - .env
+    networks:
+      - app-network
 
   mongo-express:
     image: mongo-express:latest
@@ -39,3 +45,8 @@ services:
       - "8081:8081"
     depends_on:
       - db
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
